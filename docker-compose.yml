@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: .
+      args:
+        - DEV=true
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/app # map directories from our system to the docker container, updates in the local file to be updated(dont build after changing one line of code)
+    command: >
+      sh -c "python3 manage.py runserver 0.0.0.0:8000"
