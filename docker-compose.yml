@@ -12,3 +12,23 @@ services:
       - ./app:/app # map directories from our system to the docker container, updates in the local file to be updated(dont build after changing one line of code)
     command: >
       sh -c "python3 manage.py runserver 0.0.0.0:8000"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=devdb
+      - DB_USER=devuser
+      - DB_PASS=changeme
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13-alpine
+    volumes:
+      - dev-db-data:/val/lib/postgresql/data
+    environment:
+      # only for local development, in real life don't hard code these
+      - POSTGRES_DB=devdb
+      - POSTGRES_USER=devuser
+      - POSTGRES_PASSWORD=changeme
+
+volumes:
+  dev-db-data:
