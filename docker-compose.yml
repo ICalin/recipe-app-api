@@ -23,7 +23,7 @@ services:
   db:
     image: postgres:13-alpine
     volumes:
-      - dev-db-data:/val/lib/postgresql/data
+      - dev-db-data:/var/lib/postgresql/data
     environment:
       # only for local development, in real life don't hard code these
       - POSTGRES_DB=devdb
