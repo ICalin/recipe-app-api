@@ -383,6 +383,50 @@ class PrivateRecipeAPITests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(recipe.ingredients.count(), 0)
 
+    def test_filter_by_tags(self):
+        """Test filtering recipes by tags"""
+        r1 = create_recipe(user=self.user, title="Thai Vegetable Curry")
+        r2 = create_recipe(user=self.user, title="Pizza")
+        tag1 = Tag.objects.create(user=self.user, name="Thai")
+        tag2 = Tag.objects.create(user=self.user, name="Italian")
+        r1.tags.add(tag1)
+        r2.tags.add(tag2)
+        r3 = create_recipe(user=self.user, title="Fish and Chips")
+
+        params = {"tags": f"{tag1.id},{tag2.id}"}
+        res = self.client.get(RECIPES_URL, params)
+
+        s1 = RecipeSerializer(r1)
+        s2 = RecipeSerializer(r2)
+        s3 = RecipeSerializer(r3)
+
+        self.assertIn(s1.data, res.data)
+        self.assertIn(s2.data, res.data)
+        self.assertNotIn(s3.data, res.data)
+
+    def test_filter_by_ingredients(self):
+        """Test fol filtering recipes by ingredients"""
+        r1 = create_recipe(user=self.user, title="Pasta")
+        r2 = create_recipe(user=self.user, title="Pizza")
+        ing1 = Ingredient.objects.create(user=self.user, name="Spaghetti")
+        ing2 = Ingredient.objects.create(user=self.user, name="Salami")
+        r1.ingredients.add(ing1)
+        r2.ingredients.add(ing2)
+        r3 = create_recipe(user=self.user,title="Lasagna")
+
+        params = {"ingredients": f"{ing1.id},{ing2.id}"}
+        res = self.client.get(RECIPES_URL, params)
+
+        s1 = RecipeSerializer(r1)
+        s2 = RecipeSerializer(r2)
+        s3 = RecipeSerializer(r3)
+
+        self.assertIn(s1.data,res.data)
+        self.assertIn(s2.data,res.data)
+        self.assertNotIn(s3.data,res.data)
+        
+
+
 
 class ImageUploadTests(TestCase):
     """test for the image upload api"""
@@ -390,7 +434,7 @@ class ImageUploadTests(TestCase):
     # run before the test
     def setUp(self):
         self.client = APIClient()
-        self.user = create_user(email = "user@test.com", password = "pas123")
+        self.user = create_user(email="user@test.com", password="pas123")
         self.client.force_authenticate(self.user)
         self.recipe = create_recipe(user=self.user)
 
