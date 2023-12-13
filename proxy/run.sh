@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -e 
+set -e
 
 # this line is taking a template file (default.conf.tpl), substituting any environment variable placeholders with their actual values, 
 # and then saving the result as the configuration file (default.conf) dynamically configure applications by injecting

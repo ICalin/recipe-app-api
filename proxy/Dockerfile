@@ -1,8 +1,7 @@
 # it runs with root privilege
 # it needs only to run it and handle requests from a specific directory
 FROM nginxinc/nginx-unprivileged:1-alpine
-LABEL maintainer="calin.com"
-
+LABEL maintainer="londonappdeveloper.com"
 # store the conf in the docker image in the location /etc/nginx/default/conf.tpl
 COPY ./default.conf.tpl /etc/nginx/default.conf.tpl
 # same as before
