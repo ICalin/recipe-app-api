@@ -28,7 +28,7 @@ services:
       - POSTGRES_PASSWORD=${DB_PASS}
 
   proxy:
-    build: 
+    build:
       context: ./proxy
     restart: always
     depends_on:

@@ -4,7 +4,7 @@ FROM nginxinc/nginx-unprivileged:1-alpine
 LABEL maintainer="calin.com"
 
 # store the conf in the docker image in the location /etc/nginx/default/conf.tpl
-COPY ./default.conf.tpl /etc/nginx/default/conf.tpl
+COPY ./default.conf.tpl /etc/nginx/default.conf.tpl
 # same as before
 COPY ./uwsgi_params /etc/nginx/uwsgi_params
 #same as before
