@@ -20,8 +20,8 @@ def detail_url(ingredient_id):  # create a unique url for a specific ingredient 
     return reverse("recipe:ingredient-detail", args=[ingredient_id])
 
 
-def create_user(email="test@example.com", passwrod="pas123"):
-    return get_user_model().objects.create_user(email, passwrod)
+def create_user(email="test@example.com", password="pas123"):
+    return get_user_model().objects.create_user(email, password)
 
 
 class PublicIngredientAPITests(TestCase):
@@ -109,7 +109,7 @@ class PrivateIngredientAPITests(TestCase):
 
     def test_fitered_ingredients_unique(self):
         """Test filtered ingredients returns a unique list"""
-        ing1 = Ingredient.objects.create(user=self.user, name="egs")
+        ing1 = Ingredient.objects.create(user=self.user, name="eggs")
         ing2 = Ingredient.objects.create(user=self.user, name="lentils")
         recipe1 = Recipe.objects.create(
             title="Some recipe",
@@ -124,8 +124,10 @@ class PrivateIngredientAPITests(TestCase):
             user=self.user,
         )
         recipe1.ingredients.add(ing1)
-        recipe2.ingredients.add(ing2)
+        recipe2.ingredients.add(ing1)
 
         res = self.client.get(INGREDIENT_URL, {"assigned_only": 1})
 
         self.assertEqual(len(res.data), 1)
+
+
